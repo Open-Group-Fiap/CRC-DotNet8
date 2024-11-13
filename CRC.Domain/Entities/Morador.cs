@@ -36,6 +36,4 @@ public class Morador
     [Column("IDENTIFICADOR_RES")]
     public string IdentificadorRes { get; set; }
     
-    public List<MoradorBonus> MoradorBonus { get; set; } = new();
-    
 }
