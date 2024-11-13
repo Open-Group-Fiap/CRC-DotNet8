@@ -15,11 +15,13 @@ public class Morador
     
     [Column("ID_CONDOMINIO")]
     public int IdCondominio { get; set; }
-    public Condominio? Condominio { get; set; }
+    [ForeignKey("IdCondominio")]
+    public Condominio Condominio { get; set; }
     
     [Column("ID_AUTH")]
     public int IdAuth { get; set; }
-    public Auth? Auth { get; set; }
+    [ForeignKey("IdAuth")]
+    public Auth Auth { get; set; }
     
     [Column("CPF")]
     public string Cpf { get; set; }

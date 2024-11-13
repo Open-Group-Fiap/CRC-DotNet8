@@ -13,7 +13,8 @@ public class Bonus
     
     [Column("ID_CONDOMINIO")]
     public int IdCondominio { get; set; }
-    public Condominio? Condominio { get; set; }
+    [ForeignKey("IdCondominio")]
+    public Condominio Condominio { get; set; }
     
     [Column("NOME")]
     public string Nome { get; set; }

@@ -1,9 +1,23 @@
+using System.Runtime.Intrinsics.X86;
+using CRC.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+#region Database
+
+builder.Services.AddDbContext<CrcDbContext>(options =>
+{
+    options.UseOracle(builder.Configuration.GetConnectionString("FiapOracleConnection"));
+});
+
+#endregion
+
 
 var app = builder.Build();
 
@@ -14,29 +28,29 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-var summaries = new[]
+app.MapGet("/user/{id:int}", async (CrcDbContext db, int id) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
+    var user = await db.Moradores.Include(m=>m.Condominio).Include(m=>m.Auth).FirstOrDefaultAsync(m => m.Id == id);
+    if (user == null)
     {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
+        return Results.NotFound();
+    }
+
+    return Results.Ok(user);
+});
+
+app.MapGet("/bonus/user/{id:int}", async (CrcDbContext db, int id) =>
+{
+    
+    // return a list of bonus for a user
+    var bonus = await db.MoradorBonus.Where(m => m.IdMorador == id).ToListAsync();
+    
+    if (bonus == null)
+    {
+        return Results.NotFound();
+    }
+    
+    return Results.Ok(bonus);
+});
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
