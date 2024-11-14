@@ -106,16 +106,29 @@ public static class BonusResource
             .WithTags("Bonus");
 
         bonusGroup.MapGet("/condominio/{idCondominio:int}",
-            async (BonusService _service, CondominioService _serviceCon, int idCondominio, int pageNumber = 1, int pageSize = 30) =>
-            {
-                var checkCondominio = await _serviceCon.GetByIdAsync(idCondominio);
-                if (checkCondominio == null)
+                async (BonusService _service, CondominioService _serviceCon, int idCondominio, int pageNumber = 1,
+                    int pageSize = 30) =>
                 {
-                    return Results.BadRequest("Condomínio não encontrado");
-                }
+                    var checkCondominio = await _serviceCon.GetByIdAsync(idCondominio);
+                    if (checkCondominio == null)
+                    {
+                        return Results.BadRequest("Condomínio não encontrado");
+                    }
 
-                var result = await _service.GetByCondominioIdAsync(idCondominio, pageNumber, pageSize);
-                return Results.Ok(result);
+                    var result = await _service.GetByCondominioIdAsync(idCondominio, pageNumber, pageSize);
+                    return Results.Ok(result);
+                })
+            .WithDescription("Retorna uma lista de bonus por condomínio")
+            .Produces<List<BonusResponse>>(StatusCodes.Status200OK)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .WithName("GetBonusByCondominioId")
+            .WithTags("Bonus")
+            .WithOpenApi(generatedOperation =>
+            {
+                var parameter = generatedOperation.Parameters[0];
+                parameter.Description = "Id do condomínio a qual os bonus a ser consultados pertencem";
+                parameter.Required = true;
+                return generatedOperation;
             });
 
         bonusGroup.MapGet("/avaliable/condominio/{idCondominio:int}",

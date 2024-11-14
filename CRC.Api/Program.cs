@@ -1,6 +1,7 @@
 using System.Runtime.Intrinsics.X86;
 using CRC.Api.Repository;
 using CRC.Api.Resource;
+using CRC.Api.Script;
 using CRC.Api.Service;
 using CRC.Data;
 using CRC.Domain.Entities;
@@ -40,37 +41,96 @@ builder.Services.AddScoped<MoradorBonusService>();
 
 #endregion
 
+// Script para criar as procedures
+builder.Services.AddScoped<ProcScript>();
+
 
 var app = builder.Build();
+
+// Carrega o script de criação de procedures
+using (var scope = app.Services.CreateScope())
+{
+    var sqlRunner = scope.ServiceProvider.GetRequiredService<ProcScript>();
+    await sqlRunner.ExecuteSqlScriptAsync();
+}
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
+#region Rotas_alternativas_de_servico
 
-app.MapGet("/user/{id:int}", async (CrcDbContext db, int id) =>
+app.MapGet("/consumo/{idMorador:int}", async (CrcDbContext db, int idMorador) =>
 {
-    var user = await db.Moradores.Include(m=>m.Condominio).Include(m=>m.Auth).FirstOrDefaultAsync(m => m.Id == id);
-    if (user == null)
-    {
-        return Results.NotFound();
-    }
-
-    return Results.Ok(user);
-});
-
-app.MapGet("/bonus/user/{id:int}", async (CrcDbContext db, int id) =>
-{
+    var faturaAtual = await db.Faturas
+        .Where(f => f.Morador.Id == idMorador)
+        .OrderByDescending(f => f.DtGeracao)
+        .FirstOrDefaultAsync();
     
-    // return a list of bonus for a user
-    var bonus = await db.MoradorBonus.Where(m => m.IdMorador == id).ToListAsync();
+    var faturaAnterior = await db.Faturas
+        .Where(f => f.Morador.Id == idMorador)
+        .Skip(1)
+        .OrderByDescending(f => f.DtGeracao)
+        .FirstOrDefaultAsync();
     
-    if (bonus == null)
+    if(faturaAtual == null || faturaAnterior == null)
     {
-        return Results.NotFound();
+        return Results.NotFound("Morador não possui faturas suficientes para calcular o consumo");
     }
     
-    return Results.Ok(bonus);
+    var porcentagemConsumo = (faturaAtual.QtdConsumida - faturaAnterior.QtdConsumida) / faturaAnterior.QtdConsumida;
+    
+    return Results.Ok(porcentagemConsumo);
+})
+.WithDescription("Calcula a porcentagem de consumo em relação à ultima fatura de luz do morador")
+.Produces<int>()
+.ProducesProblem(StatusCodes.Status404NotFound)
+.WithTags("Utils")
+.WithName("GetConsumo")
+.WithOpenApi(generatedOperation =>
+{
+    var parameter = generatedOperation.Parameters[0];
+    parameter.Description = "Id do morador a qual o consumo será calculado";
+    parameter.Required = true;
+    return generatedOperation;
 });
+
+
+app.MapGet("/randomFatura/{idMorador:int}", async (CrcDbContext db, int idMorador) =>
+{
+    var morador = await db.Moradores.FindAsync(idMorador);
+    
+    if(morador == null)
+    {
+        return Results.BadRequest("Morador não encontrado");
+    }
+    
+    var fatura = new Fatura
+    {
+        Morador = morador,
+        DtGeracao = DateTime.Now - TimeSpan.FromDays(new Random().Next(1, 366)),
+        QtdConsumida = new Random().Next(1, 100),
+    };
+    
+    await db.Faturas.AddAsync(fatura);
+    await db.SaveChangesAsync();
+    
+    return Results.Ok(fatura);
+})
+.WithDescription("Cria uma fatura aleatória para um morador")
+.Produces<Fatura>()
+.ProducesProblem(StatusCodes.Status400BadRequest)
+.WithTags("Utils")
+.WithName("CreateRandomFatura")
+.WithOpenApi(generatedOperation =>
+{
+    var parameter = generatedOperation.Parameters[0];
+    parameter.Description = "Id do morador a qual a fatura será gerada";
+    parameter.Required = true;
+    return generatedOperation;
+});
+
+#endregion
+
 
 app.MapCondominioEndpoints();
 app.MapAuthEndpoints();
