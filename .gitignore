@@ -204,4 +204,4 @@ $RECYCLE.BIN/
 *.msp
 
 # Devlopment appsettings
-appsettings.Development.json
+appsettings.*.json
