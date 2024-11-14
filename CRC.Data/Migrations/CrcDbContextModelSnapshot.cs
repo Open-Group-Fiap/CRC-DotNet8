@@ -3,8 +3,8 @@ using System;
 using CRC.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Oracle.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
@@ -20,25 +20,25 @@ namespace CRC.Data.Migrations
                 .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            OracleModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("CRC.Domain.Entities.Auth", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("ID_AUTH");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR2(450)")
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("EMAIL");
 
                     b.Property<string>("HashSenha")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("HASH_SENHA");
 
                     b.HasKey("Id");
@@ -53,30 +53,30 @@ namespace CRC.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("ID_BONUS");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Custo")
-                        .HasColumnType("DECIMAL(18, 2)")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("CUSTO");
 
                     b.Property<string>("Descricao")
-                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("DESCRICAO");
 
                     b.Property<int>("IdCondominio")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("ID_CONDOMINIO");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("NOME");
 
                     b.Property<int>("QtdMax")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("QTD_MAX");
 
                     b.HasKey("Id");
@@ -90,19 +90,19 @@ namespace CRC.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("ID_CONDOMINIO");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Endereco")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("ENDERECO");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("NOME");
 
                     b.HasKey("Id");
@@ -114,21 +114,21 @@ namespace CRC.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("ID_FATURA");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DtGeracao")
-                        .HasColumnType("TIMESTAMP(7)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("DT_GERACAO");
 
                     b.Property<int>("IdMorador")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("ID_MORADOR");
 
                     b.Property<int>("QtdConsumida")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("QTD_CONSUMIDA");
 
                     b.HasKey("Id");
@@ -142,42 +142,42 @@ namespace CRC.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("ID_MORADOR");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Cpf")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR2(450)")
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("CPF");
 
                     b.Property<int>("IdAuth")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("ID_AUTH");
 
                     b.Property<int>("IdCondominio")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("ID_CONDOMINIO");
 
                     b.Property<string>("IdentificadorRes")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("IDENTIFICADOR_RES");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("NOME");
 
                     b.Property<int?>("Pontos")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasDefaultValue(0)
                         .HasColumnName("PONTOS");
 
                     b.Property<int>("QtdMoradores")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("QTD_MORADORES");
 
                     b.HasKey("Id");
@@ -197,21 +197,21 @@ namespace CRC.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("ID_MB");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("IdBonus")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("ID_BONUS");
 
                     b.Property<int>("IdMorador")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("ID_MORADOR");
 
                     b.Property<int>("Qtd")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("QTD");
 
                     b.HasKey("Id");
@@ -270,7 +270,7 @@ namespace CRC.Data.Migrations
                     b.HasOne("CRC.Domain.Entities.Bonus", "Bonus")
                         .WithMany("MoradorBonus")
                         .HasForeignKey("IdBonus")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("CRC.Domain.Entities.Morador", "Morador")

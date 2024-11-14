@@ -29,9 +29,8 @@ public class FaturaRepository : IRepository<Fatura>
     public async Task<Fatura> AddAsync(Fatura entity)
     {
         
-        int id = await _context.CreateFaturaAsync(entity.IdMorador, entity.QtdConsumida, entity.DtGeracao);
+        await _db.AddAsync(entity);
         await _context.SaveChangesAsync();
-        entity.Id = id;
         return entity;
     }
 

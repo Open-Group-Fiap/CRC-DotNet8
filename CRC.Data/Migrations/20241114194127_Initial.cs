@@ -15,10 +15,10 @@ namespace CRC.Data.Migrations
                 name: "T_OP_CRC_AUTH",
                 columns: table => new
                 {
-                    ID_AUTH = table.Column<int>(type: "NUMBER(10)", nullable: false)
-                        .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    EMAIL = table.Column<string>(type: "NVARCHAR2(450)", nullable: false),
-                    HASH_SENHA = table.Column<string>(type: "NVARCHAR2(2000)", nullable: false)
+                    ID_AUTH = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EMAIL = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    HASH_SENHA = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,10 +29,10 @@ namespace CRC.Data.Migrations
                 name: "T_OP_CRC_CONDOMINIO",
                 columns: table => new
                 {
-                    ID_CONDOMINIO = table.Column<int>(type: "NUMBER(10)", nullable: false)
-                        .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    NOME = table.Column<string>(type: "NVARCHAR2(2000)", nullable: false),
-                    ENDERECO = table.Column<string>(type: "NVARCHAR2(2000)", nullable: false)
+                    ID_CONDOMINIO = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NOME = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ENDERECO = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -43,13 +43,13 @@ namespace CRC.Data.Migrations
                 name: "T_OP_CRC_BONUS",
                 columns: table => new
                 {
-                    ID_BONUS = table.Column<int>(type: "NUMBER(10)", nullable: false)
-                        .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    ID_CONDOMINIO = table.Column<int>(type: "NUMBER(10)", nullable: false),
-                    NOME = table.Column<string>(type: "NVARCHAR2(2000)", nullable: false),
-                    DESCRICAO = table.Column<string>(type: "NVARCHAR2(2000)", nullable: true),
-                    CUSTO = table.Column<decimal>(type: "DECIMAL(18, 2)", nullable: false),
-                    QTD_MAX = table.Column<int>(type: "NUMBER(10)", nullable: false)
+                    ID_BONUS = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_CONDOMINIO = table.Column<int>(type: "int", nullable: false),
+                    NOME = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DESCRICAO = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CUSTO = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    QTD_MAX = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -58,22 +58,23 @@ namespace CRC.Data.Migrations
                         name: "FK_T_OP_CRC_BONUS_T_OP_CRC_CONDOMINIO_ID_CONDOMINIO",
                         column: x => x.ID_CONDOMINIO,
                         principalTable: "T_OP_CRC_CONDOMINIO",
-                        principalColumn: "ID_CONDOMINIO");
+                        principalColumn: "ID_CONDOMINIO",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "T_OP_CRC_MORADOR",
                 columns: table => new
                 {
-                    ID_MORADOR = table.Column<int>(type: "NUMBER(10)", nullable: false)
-                        .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    ID_CONDOMINIO = table.Column<int>(type: "NUMBER(10)", nullable: false),
-                    ID_AUTH = table.Column<int>(type: "NUMBER(10)", nullable: false),
-                    CPF = table.Column<string>(type: "NVARCHAR2(450)", nullable: false),
-                    NOME = table.Column<string>(type: "NVARCHAR2(2000)", nullable: false),
-                    PONTOS = table.Column<int>(type: "NUMBER(10)", nullable: true),
-                    QTD_MORADORES = table.Column<int>(type: "NUMBER(10)", nullable: false),
-                    IDENTIFICADOR_RES = table.Column<string>(type: "NVARCHAR2(2000)", nullable: false)
+                    ID_MORADOR = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_CONDOMINIO = table.Column<int>(type: "int", nullable: false),
+                    ID_AUTH = table.Column<int>(type: "int", nullable: false),
+                    CPF = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    NOME = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PONTOS = table.Column<int>(type: "int", nullable: true, defaultValue: 0),
+                    QTD_MORADORES = table.Column<int>(type: "int", nullable: false),
+                    IDENTIFICADOR_RES = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -82,23 +83,25 @@ namespace CRC.Data.Migrations
                         name: "FK_T_OP_CRC_MORADOR_T_OP_CRC_AUTH_ID_AUTH",
                         column: x => x.ID_AUTH,
                         principalTable: "T_OP_CRC_AUTH",
-                        principalColumn: "ID_AUTH");
+                        principalColumn: "ID_AUTH",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_T_OP_CRC_MORADOR_T_OP_CRC_CONDOMINIO_ID_CONDOMINIO",
                         column: x => x.ID_CONDOMINIO,
                         principalTable: "T_OP_CRC_CONDOMINIO",
-                        principalColumn: "ID_CONDOMINIO");
+                        principalColumn: "ID_CONDOMINIO",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "T_OP_CRC_FATURA",
                 columns: table => new
                 {
-                    ID_FATURA = table.Column<int>(type: "NUMBER(10)", nullable: false)
-                        .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    ID_MORADOR = table.Column<int>(type: "NUMBER(10)", nullable: false),
-                    QTD_CONSUMIDA = table.Column<int>(type: "NUMBER(10)", nullable: false),
-                    DT_GERACAO = table.Column<DateTime>(type: "TIMESTAMP(7)", nullable: false)
+                    ID_FATURA = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_MORADOR = table.Column<int>(type: "int", nullable: false),
+                    QTD_CONSUMIDA = table.Column<int>(type: "int", nullable: false),
+                    DT_GERACAO = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -107,18 +110,19 @@ namespace CRC.Data.Migrations
                         name: "FK_T_OP_CRC_FATURA_T_OP_CRC_MORADOR_ID_MORADOR",
                         column: x => x.ID_MORADOR,
                         principalTable: "T_OP_CRC_MORADOR",
-                        principalColumn: "ID_MORADOR");
+                        principalColumn: "ID_MORADOR",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "T_OP_CRC_MORADOR_BONUS",
                 columns: table => new
                 {
-                    ID_MB = table.Column<int>(type: "NUMBER(10)", nullable: false)
-                        .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    ID_MORADOR = table.Column<int>(type: "NUMBER(10)", nullable: false),
-                    ID_BONUS = table.Column<int>(type: "NUMBER(10)", nullable: false),
-                    QTD = table.Column<int>(type: "NUMBER(10)", nullable: false)
+                    ID_MB = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_MORADOR = table.Column<int>(type: "int", nullable: false),
+                    ID_BONUS = table.Column<int>(type: "int", nullable: false),
+                    QTD = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -132,7 +136,8 @@ namespace CRC.Data.Migrations
                         name: "FK_T_OP_CRC_MORADOR_BONUS_T_OP_CRC_MORADOR_ID_MORADOR",
                         column: x => x.ID_MORADOR,
                         principalTable: "T_OP_CRC_MORADOR",
-                        principalColumn: "ID_MORADOR");
+                        principalColumn: "ID_MORADOR",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -174,9 +179,10 @@ namespace CRC.Data.Migrations
                 column: "ID_BONUS");
 
             migrationBuilder.CreateIndex(
-                name: "IX_T_OP_CRC_MORADOR_BONUS_ID_MORADOR",
+                name: "IX_T_OP_CRC_MORADOR_BONUS_ID_MORADOR_ID_BONUS",
                 table: "T_OP_CRC_MORADOR_BONUS",
-                column: "ID_MORADOR");
+                columns: new[] { "ID_MORADOR", "ID_BONUS" },
+                unique: true);
         }
 
         /// <inheritdoc />

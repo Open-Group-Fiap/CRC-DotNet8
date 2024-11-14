@@ -1,7 +1,5 @@
-using System.Runtime.Intrinsics.X86;
 using CRC.Api.Repository;
 using CRC.Api.Resource;
-using CRC.Api.Script;
 using CRC.Api.Service;
 using CRC.Data;
 using CRC.Domain.Entities;
@@ -18,7 +16,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<CrcDbContext>(options =>
 {
-    options.UseOracle(builder.Configuration.GetConnectionString("FiapOracleConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConnection"));
 });
 
 #endregion
@@ -41,18 +39,9 @@ builder.Services.AddScoped<MoradorBonusService>();
 
 #endregion
 
-// Script para criar as procedures
-builder.Services.AddScoped<ProcScript>();
-
 
 var app = builder.Build();
 
-// Carrega o script de criação de procedures
-using (var scope = app.Services.CreateScope())
-{
-    var sqlRunner = scope.ServiceProvider.GetRequiredService<ProcScript>();
-    await sqlRunner.ExecuteSqlScriptAsync();
-}
 
 app.UseSwagger();
 app.UseSwaggerUI();

@@ -28,9 +28,8 @@ public class CondominioRepository : IRepository<Condominio>
 
     public async Task<Condominio> AddAsync(Condominio entity)
     {
-        int id = await _context.CreateCondominioAsync(entity.Nome, entity.Endereco);
+        await _db.AddAsync(entity);
         await _context.SaveChangesAsync();
-        entity.Id = id;
         return entity;
     }
 

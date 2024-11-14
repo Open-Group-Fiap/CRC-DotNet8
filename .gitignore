@@ -202,3 +202,6 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+
+# Devlopment appsettings
+appsettings.Development.json

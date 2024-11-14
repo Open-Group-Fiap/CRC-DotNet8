@@ -39,7 +39,7 @@ public class CrcDbContext : DbContext
         modelBuilder.Entity<Bonus>()
             .HasMany(b => b.MoradorBonus)
             .WithOne(mb => mb.Bonus)
-            .OnDelete(DeleteBehavior.Cascade); 
+            .OnDelete(DeleteBehavior.NoAction); 
 
         modelBuilder.Entity<Condominio>()
             .HasMany(c => c.Moradores)
