@@ -17,6 +17,6 @@ public interface IRepository<T> where T : class
     Task<T> UpdateAsync(T entity);
     
     // generic method to delete a record
-    Task<T> DeleteAsync(int id);
+    Task<T> DeleteAsync(T entity);
     
 }

@@ -28,9 +28,9 @@ public class Morador
     
     [Column("NOME")]
     public string Nome { get; set; }
-    
+
     [Column("PONTOS")]
-    public int? Pontos { get; set; }
+    public int? Pontos { get; set; } = 0;
     
     [Column("QTD_MORADORES")]
     public int QtdMoradores { get; set; }

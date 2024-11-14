@@ -19,4 +19,31 @@ public class AuthRepository
    {
        return _db.FirstOrDefault(x => x.Email == entity.Email && x.HashSenha == entity.HashSenha);
    }
+   
+   public async Task<Auth> AddAsync(Auth entity)
+   {
+       int id = await _context.CreateAuthAsync(entity.Email, entity.HashSenha);
+       entity.Id = id;
+       await _context.SaveChangesAsync();
+       return entity;
+   }
+   
+   public async Task<Auth> UpdateAsync(Auth entity)
+   {
+       _db.Update(entity);
+       await _context.SaveChangesAsync();
+       return entity;
+   }
+   
+    public async Task<Auth> GetByIdAsync(int id)
+    {
+         return await _db.FirstOrDefaultAsync(x => x.Id == id);
+    }
+    
+    public async Task<Auth> DeleteAsync(Auth entity)
+    {
+        _db.Remove(entity);
+        await _context.SaveChangesAsync();
+        return entity;
+    }
 }

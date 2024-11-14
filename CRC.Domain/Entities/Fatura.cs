@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CRC.Domain.Entities;
@@ -18,7 +19,7 @@ public class Fatura
     public Morador Morador { get; set; }
     
     [Column("QTD_CONSUMIDA")]
-    public decimal QtdConsumida { get; set; }
+    public int QtdConsumida { get; set; }
     
     [Column("DT_GERACAO")]
     public DateTime DtGeracao { get; set; }

@@ -28,8 +28,9 @@ public class CondominioRepository : IRepository<Condominio>
 
     public async Task<Condominio> AddAsync(Condominio entity)
     {
-        await _db.AddAsync(entity);
+        int id = await _context.CreateCondominioAsync(entity.Nome, entity.Endereco);
         await _context.SaveChangesAsync();
+        entity.Id = id;
         return entity;
     }
 
@@ -40,9 +41,8 @@ public class CondominioRepository : IRepository<Condominio>
         return entity;
     }
 
-    public async Task<Condominio> DeleteAsync(int id)
+    public async Task<Condominio> DeleteAsync(Condominio entity)
     {
-        var entity = await _db.FindAsync(id);
         
         // remove cascade
         _db.Remove(entity);

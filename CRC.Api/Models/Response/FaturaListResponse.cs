@@ -1,8 +1,8 @@
 ﻿namespace CRC.Api.Models.Response;
 
-public record CondominioListResponse(
+public record FaturaListResponse(
     int PageNumber,
     int PageSize,
     int Total,
-    IEnumerable<CondominioResponse> Condominios
+    IEnumerable<FaturaResponse> Faturas
     );

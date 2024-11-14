@@ -26,9 +26,13 @@ builder.Services.AddDbContext<CrcDbContext>(options =>
 
 builder.Services.AddScoped<AuthRepository>();
 builder.Services.AddScoped<CondominioRepository>();
+builder.Services.AddScoped<MoradorRepository>();
+builder.Services.AddScoped<FaturaRepository>();
 
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<CondominioService>();
+builder.Services.AddScoped<MoradorService>();
+builder.Services.AddScoped<FaturaService>();
 
 #endregion
 
@@ -69,5 +73,7 @@ app.MapGet("/bonus/user/{id:int}", async (CrcDbContext db, int id) =>
 
 app.MapCondominioEndpoints();
 app.MapAuthEndpoints();
+app.MapMoradorEndpoints();
+app.MapFaturaEndpoints();
 
 app.Run();

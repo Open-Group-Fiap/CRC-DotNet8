@@ -19,11 +19,6 @@ public class CondominioService : IService<Condominio, CondominioRequest, Condomi
     {
         var condominios = await _repo.GetAllAsync(pageNumber, pageSize);
 
-        if (!condominios.Any())
-        {
-            return null;
-        }
-
         return MapToListResponse(condominios, pageNumber, pageSize);
     }
 
@@ -49,17 +44,30 @@ public class CondominioService : IService<Condominio, CondominioRequest, Condomi
 
     public async Task<CondominioResponse> UpdateAsync(int id, CondominioRequest request)
     {
-        var condominio = MapToEntity(request);
+        var condominio = await _repo.GetByIdAsync(id);
         
-        condominio.Id = id;
-
+        if (condominio == null)
+        {
+            return null;
+        }
+        
+        condominio.Nome = request.Nome;
+        condominio.Endereco = request.Endereco;
+        
         var updatedCondominio = await _repo.UpdateAsync(condominio);
         return MapToResponse(updatedCondominio);
     }
 
     public async Task<CondominioResponse> DeleteAsync(int id)
     {
-        var deletedCondominio = await _repo.DeleteAsync(id);
+        var condominio = await _repo.GetByIdAsync(id);
+        
+        if (condominio == null)
+        {
+            return null;
+        }
+        
+        var deletedCondominio = await _repo.DeleteAsync(condominio);
         return MapToResponse(deletedCondominio);
     }
 
