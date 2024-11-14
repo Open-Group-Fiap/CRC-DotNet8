@@ -16,4 +16,10 @@ public class Condominio
     
     [Column("ENDERECO")]
     public string Endereco { get; set; }
+    
+    [NotMapped]
+    public IEnumerable<Morador> Moradores { get; set; }
+    
+    [NotMapped]
+    public IEnumerable<Bonus> Bonus { get; set; }
 }

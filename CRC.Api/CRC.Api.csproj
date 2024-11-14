@@ -22,14 +22,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Models\Request\" />
-      <Folder Include="Models\Response\" />
-      <Folder Include="Repository\" />
-      <Folder Include="Resource\" />
-      <Folder Include="Service\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\CRC.Data\CRC.Data.csproj" />
     </ItemGroup>
 

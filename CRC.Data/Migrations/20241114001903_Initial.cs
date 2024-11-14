@@ -40,21 +40,6 @@ namespace CRC.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "T_OP_CRC_FATURA",
-                columns: table => new
-                {
-                    ID_FATURA = table.Column<int>(type: "NUMBER(10)", nullable: false)
-                        .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    ID_MORADOR = table.Column<int>(type: "NUMBER(10)", nullable: false),
-                    QTD_CONSUMIDA = table.Column<decimal>(type: "DECIMAL(18, 2)", nullable: false),
-                    DT_GERACAO = table.Column<DateTime>(type: "TIMESTAMP(7)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_T_OP_CRC_FATURA", x => x.ID_FATURA);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "T_OP_CRC_BONUS",
                 columns: table => new
                 {
@@ -109,6 +94,27 @@ namespace CRC.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "T_OP_CRC_FATURA",
+                columns: table => new
+                {
+                    ID_FATURA = table.Column<int>(type: "NUMBER(10)", nullable: false)
+                        .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
+                    ID_MORADOR = table.Column<int>(type: "NUMBER(10)", nullable: false),
+                    QTD_CONSUMIDA = table.Column<decimal>(type: "DECIMAL(18, 2)", nullable: false),
+                    DT_GERACAO = table.Column<DateTime>(type: "TIMESTAMP(7)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_T_OP_CRC_FATURA", x => x.ID_FATURA);
+                    table.ForeignKey(
+                        name: "FK_T_OP_CRC_FATURA_T_OP_CRC_MORADOR_ID_MORADOR",
+                        column: x => x.ID_MORADOR,
+                        principalTable: "T_OP_CRC_MORADOR",
+                        principalColumn: "ID_MORADOR",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "T_OP_CRC_MORADOR_BONUS",
                 columns: table => new
                 {
@@ -147,6 +153,11 @@ namespace CRC.Data.Migrations
                 column: "ID_CONDOMINIO");
 
             migrationBuilder.CreateIndex(
+                name: "IX_T_OP_CRC_FATURA_ID_MORADOR",
+                table: "T_OP_CRC_FATURA",
+                column: "ID_MORADOR");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_T_OP_CRC_MORADOR_CPF_ID_AUTH",
                 table: "T_OP_CRC_MORADOR",
                 columns: new[] { "CPF", "ID_AUTH" },
@@ -155,7 +166,8 @@ namespace CRC.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_T_OP_CRC_MORADOR_ID_AUTH",
                 table: "T_OP_CRC_MORADOR",
-                column: "ID_AUTH");
+                column: "ID_AUTH",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_T_OP_CRC_MORADOR_ID_CONDOMINIO",

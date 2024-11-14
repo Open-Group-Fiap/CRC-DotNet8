@@ -14,10 +14,15 @@ public class Fatura
     [Column("ID_MORADOR")]
     public int IdMorador { get; set; }
     
+    [ForeignKey("IdMorador")]
+    public Morador Morador { get; set; }
+    
     [Column("QTD_CONSUMIDA")]
     public decimal QtdConsumida { get; set; }
     
     [Column("DT_GERACAO")]
     public DateTime DtGeracao { get; set; }
+    
+    
     
 }

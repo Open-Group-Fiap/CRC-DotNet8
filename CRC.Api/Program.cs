@@ -1,5 +1,9 @@
 using System.Runtime.Intrinsics.X86;
+using CRC.Api.Repository;
+using CRC.Api.Resource;
+using CRC.Api.Service;
 using CRC.Data;
+using CRC.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +19,16 @@ builder.Services.AddDbContext<CrcDbContext>(options =>
 {
     options.UseOracle(builder.Configuration.GetConnectionString("FiapOracleConnection"));
 });
+
+#endregion
+
+#region Repositories_Services
+
+builder.Services.AddScoped<AuthRepository>();
+builder.Services.AddScoped<CondominioRepository>();
+
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<CondominioService>();
 
 #endregion
 
@@ -52,5 +66,8 @@ app.MapGet("/bonus/user/{id:int}", async (CrcDbContext db, int id) =>
     
     return Results.Ok(bonus);
 });
+
+app.MapCondominioEndpoints();
+app.MapAuthEndpoints();
 
 app.Run();

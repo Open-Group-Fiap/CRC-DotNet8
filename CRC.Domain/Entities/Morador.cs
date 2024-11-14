@@ -38,4 +38,10 @@ public class Morador
     [Column("IDENTIFICADOR_RES")]
     public string IdentificadorRes { get; set; }
     
+    [NotMapped]
+    public IEnumerable<MoradorBonus> MoradorBonus { get; set; }
+    
+    [NotMapped]
+    public IEnumerable<Fatura> Faturas { get; set; }
+    
 }

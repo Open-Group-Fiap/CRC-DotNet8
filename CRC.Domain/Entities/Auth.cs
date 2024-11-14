@@ -19,4 +19,7 @@ public class Auth
     [Column("HASH_SENHA")]
     public string HashSenha { get; set; }
     
+    [NotMapped]
+    public Morador Morador { get; set; }
+    
 }

@@ -133,6 +133,8 @@ namespace CRC.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IdMorador");
+
                     b.ToTable("T_OP_CRC_FATURA");
                 });
 
@@ -178,7 +180,8 @@ namespace CRC.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdAuth");
+                    b.HasIndex("IdAuth")
+                        .IsUnique();
 
                     b.HasIndex("IdCondominio");
 
@@ -221,7 +224,7 @@ namespace CRC.Data.Migrations
             modelBuilder.Entity("CRC.Domain.Entities.Bonus", b =>
                 {
                     b.HasOne("CRC.Domain.Entities.Condominio", "Condominio")
-                        .WithMany()
+                        .WithMany("Bonus")
                         .HasForeignKey("IdCondominio")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -229,16 +232,27 @@ namespace CRC.Data.Migrations
                     b.Navigation("Condominio");
                 });
 
+            modelBuilder.Entity("CRC.Domain.Entities.Fatura", b =>
+                {
+                    b.HasOne("CRC.Domain.Entities.Morador", "Morador")
+                        .WithMany("Faturas")
+                        .HasForeignKey("IdMorador")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Morador");
+                });
+
             modelBuilder.Entity("CRC.Domain.Entities.Morador", b =>
                 {
                     b.HasOne("CRC.Domain.Entities.Auth", "Auth")
-                        .WithMany()
-                        .HasForeignKey("IdAuth")
+                        .WithOne("Morador")
+                        .HasForeignKey("CRC.Domain.Entities.Morador", "IdAuth")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CRC.Domain.Entities.Condominio", "Condominio")
-                        .WithMany()
+                        .WithMany("Moradores")
                         .HasForeignKey("IdCondominio")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -251,13 +265,13 @@ namespace CRC.Data.Migrations
             modelBuilder.Entity("CRC.Domain.Entities.MoradorBonus", b =>
                 {
                     b.HasOne("CRC.Domain.Entities.Bonus", "Bonus")
-                        .WithMany()
+                        .WithMany("MoradorBonus")
                         .HasForeignKey("IdBonus")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CRC.Domain.Entities.Morador", "Morador")
-                        .WithMany()
+                        .WithMany("MoradorBonus")
                         .HasForeignKey("IdMorador")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -265,6 +279,31 @@ namespace CRC.Data.Migrations
                     b.Navigation("Bonus");
 
                     b.Navigation("Morador");
+                });
+
+            modelBuilder.Entity("CRC.Domain.Entities.Auth", b =>
+                {
+                    b.Navigation("Morador")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CRC.Domain.Entities.Bonus", b =>
+                {
+                    b.Navigation("MoradorBonus");
+                });
+
+            modelBuilder.Entity("CRC.Domain.Entities.Condominio", b =>
+                {
+                    b.Navigation("Bonus");
+
+                    b.Navigation("Moradores");
+                });
+
+            modelBuilder.Entity("CRC.Domain.Entities.Morador", b =>
+                {
+                    b.Navigation("Faturas");
+
+                    b.Navigation("MoradorBonus");
                 });
 #pragma warning restore 612, 618
         }

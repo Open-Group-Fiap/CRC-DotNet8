@@ -27,4 +27,7 @@ public class Bonus
     
     [Column("QTD_MAX")]
     public int QtdMax { get; set; }
+    
+    [NotMapped]
+    public IEnumerable<MoradorBonus> MoradorBonus { get; set; }
 }

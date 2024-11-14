@@ -17,4 +17,36 @@ public class CrcDbContext : DbContext
     {
     }
     
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Morador>()
+            .HasOne(m => m.Auth)
+            .WithOne(a => a.Morador)
+            .OnDelete(DeleteBehavior.Cascade); 
+
+        modelBuilder.Entity<Morador>()
+            .HasMany(m => m.MoradorBonus)
+            .WithOne(mb => mb.Morador)
+            .OnDelete(DeleteBehavior.Cascade); 
+
+        modelBuilder.Entity<Morador>()
+            .HasMany(m => m.Faturas)
+            .WithOne(f => f.Morador)
+            .OnDelete(DeleteBehavior.Cascade); 
+
+        modelBuilder.Entity<Bonus>()
+            .HasMany(b => b.MoradorBonus)
+            .WithOne(mb => mb.Bonus)
+            .OnDelete(DeleteBehavior.Cascade); 
+
+        modelBuilder.Entity<Condominio>()
+            .HasMany(c => c.Moradores)
+            .WithOne(m => m.Condominio)
+            .OnDelete(DeleteBehavior.Cascade); 
+
+        modelBuilder.Entity<Condominio>()
+            .HasMany(b => b.Bonus)
+            .WithOne(b => b.Condominio)
+            .OnDelete(DeleteBehavior.Cascade); 
+    }
 }
