@@ -53,4 +53,5 @@ public class BonusRepository : IRepository<Bonus>
     {
         return _db.Include(b=> b.Condominio).Where(b => b.IdCondominio == idCondominio).ToList();
     }
+    
 }

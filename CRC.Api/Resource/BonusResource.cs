@@ -118,6 +118,51 @@ public static class BonusResource
                 return Results.Ok(result);
             });
 
+        bonusGroup.MapGet("/avaliable/condominio/{idCondominio:int}",
+                async (BonusService _service, CondominioService _serviceCon, int idCondominio) =>
+                {
+                    var checkCondominio = await _serviceCon.GetByIdAsync(idCondominio);
+                    if (checkCondominio == null)
+                    {
+                        return Results.BadRequest("Condomínio não encontrado");
+                    }
+
+                    var result = await _service.GetAvaliableByCondominioIdAsync(idCondominio);
+                    return Results.Ok(result);
+                })
+            .WithDescription("Retorna uma lista de bonus disponíveis")
+            .Produces<IEnumerable<BonusCalculateResponse>>()
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .WithName("GetAvaliableBonus")
+            .WithTags("Bonus")
+            .WithOpenApi(generatedOperation =>
+            {
+                var parameter = generatedOperation.Parameters[0];
+                parameter.Description = "Id do condomínio a qual os bonus a ser consultados pertencem";
+                parameter.Required = true;
+                return generatedOperation;
+            });
+
+        bonusGroup.MapGet("/avaliable/{id:int}",
+                async (BonusService _service, int id) =>
+                {
+                    var result = await _service.GetAvaliableBonusAsync(id);
+                    return result != null ? Results.Ok(result) : Results.NotFound("Bonus não encontrado");
+                })
+            .WithDescription("Calcula a quantidade de bonus disponíveis")
+            .Produces<BonusCalculateResponse>()
+            .WithName("CalculateBonus")
+            .WithTags("Bonus")
+            .WithOpenApi(generatedOperation =>
+            {
+                var parameter = generatedOperation.Parameters[0];
+                parameter.Description = "Id do bonus a ser consultados";
+                parameter.Required = true;
+                return generatedOperation;
+            });
+
+
+
     }
     
 }

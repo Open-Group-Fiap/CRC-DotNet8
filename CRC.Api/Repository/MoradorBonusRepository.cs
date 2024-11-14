@@ -65,4 +65,9 @@ public class MoradorBonusRepository : IRepository<MoradorBonus>
         return _db.Include(mb=> mb.Bonus).Include(mb=>mb.Morador).FirstOrDefault(x => x.IdMorador == idMorador && x.IdBonus == idBonus);
     }
     
+    public async Task<int> GetAvaliableByIdAsync(int idBonus)
+    {
+        return _db.Where(x => x.IdBonus == idBonus).Sum(x => x.Qtd);
+    }
+    
 }

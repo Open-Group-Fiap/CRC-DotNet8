@@ -10,10 +10,12 @@ public class BonusService : IService<Bonus, BonusRequest,BonusResponse, BonusLis
 {
     
     private BonusRepository _repo;
+    private MoradorBonusRepository _moradorBonusRepository;
 
-    public BonusService(BonusRepository repo)
+    public BonusService(BonusRepository repo, MoradorBonusRepository moradorBonusRepository)
     {
         _repo = repo;
+        _moradorBonusRepository = moradorBonusRepository;
     }
     
     public async Task<BonusListResponse> GetAllAsync(int pageNumber, int pageSize)
@@ -81,6 +83,47 @@ public class BonusService : IService<Bonus, BonusRequest,BonusResponse, BonusLis
     {
         var bonus = await _repo.GetByCondominioIdAsync(idCondominio);
         return MapToListResponse(bonus, pageNumber, pageSize);
+    }
+    
+    public async Task<IEnumerable<BonusCalculateResponse>> GetAvaliableByCondominioIdAsync(int idCondominio)
+    {
+        var bonus = await _repo.GetByCondominioIdAsync(idCondominio);
+        var bonusResponse = new List<BonusCalculateResponse>();
+        
+        for (int i = 0; i < bonus.Count(); i++)
+        {
+            var MoradorBonusQtd = await _moradorBonusRepository.GetAvaliableByIdAsync(bonus.ElementAt(i).Id);
+            var qtd = bonus.ElementAt(i).QtdMax -  MoradorBonusQtd;
+            bonusResponse.Add(MapToCalculateResponse(bonus.ElementAt(i), qtd));
+        }
+        
+        return bonusResponse;
+    }
+    
+    public async Task<BonusCalculateResponse> GetAvaliableBonusAsync(int idBonus)
+    {
+        var bonus = await _repo.GetByIdAsync(idBonus);
+        
+        if (bonus == null)
+        {
+            return null;
+        }
+        
+        var MoradorBonusQtd = await _moradorBonusRepository.GetAvaliableByIdAsync(idBonus);
+        var qtd = bonus.QtdMax -  MoradorBonusQtd;
+        
+        return MapToCalculateResponse(bonus, qtd);
+    }
+    
+    public BonusCalculateResponse MapToCalculateResponse(Bonus entity, int qtd)
+    {
+        return new BonusCalculateResponse(
+            entity.Id,
+            entity.Nome,
+            entity.Descricao,
+            entity.Custo,
+            qtd
+        );
     }
 
     public BonusResponse MapToResponse(Bonus entity)

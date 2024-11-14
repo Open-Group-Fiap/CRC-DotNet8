@@ -8,7 +8,6 @@ namespace CRC.Api.Service;
 public class MoradorBonusService : IService<MoradorBonus, MoradorBonusRequest, MoradorBonusResponse, MoradorBonusListResponse>
 {
     private MoradorBonusRepository _repo;
-    private BonusRepository _bonusRepo;
     
     public MoradorBonusService(MoradorBonusRepository repo)
     {

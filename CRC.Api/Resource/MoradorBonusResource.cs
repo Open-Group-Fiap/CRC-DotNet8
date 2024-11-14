@@ -43,6 +43,10 @@ public static class MoradorBonusResource
         
         moradorBonusGroup.MapPost("/", async (MoradorBonusService _service, MoradorService _serviceMorador, BonusService _serviceBonus, MoradorBonusRequest request) =>
             {
+                if (request.IdMorador <= 0) return Results.BadRequest("Código de Morador inválido");
+                if (request.IdBonus <= 0) return Results.BadRequest("Código de Bonus inválido");
+                if (request.Qtd < 0) return Results.BadRequest("Quantidade inválida");
+                
                 var checkMorador = await _serviceMorador.GetByIdAsync(request.IdMorador);
                 if (checkMorador == null)
                 {
@@ -62,9 +66,11 @@ public static class MoradorBonusResource
                     return Results.BadRequest("MoradorBonus já cadastrado");
                 }
                 
-                if (request.IdMorador <= 0) return Results.BadRequest("Código de Morador inválido");
-                if (request.IdBonus <= 0) return Results.BadRequest("Código de Bonus inválido");
-                if (request.Qtd < 0) return Results.BadRequest("Quantidade inválida");
+                var checkBonusAvailable = await _serviceBonus.GetAvaliableBonusAsync(request.IdBonus);
+                if(checkBonusAvailable.Qtd < request.Qtd)
+                {
+                    return Results.BadRequest("Quantidade de bonus indisponível");
+                }
                 
                 var result = await _service.AddAsync(request);
                 return Results.Created($"/moradorbonus/{result.Id}", result);
@@ -78,6 +84,10 @@ public static class MoradorBonusResource
         moradorBonusGroup.MapPut("/{id:int}",
                 async (MoradorBonusService _service, MoradorService _serviceMorador, BonusService _serviceBonus, MoradorBonusRequest request, int id) =>
                 {
+                    if (request.IdMorador <= 0) return Results.BadRequest("Código de Morador inválido");
+                    if (request.IdBonus <= 0) return Results.BadRequest("Código de Bonus inválido");
+                    if (request.Qtd < 0) return Results.BadRequest("Quantidade inválida");
+                    
                     var checkMorador = await _serviceMorador.GetByIdAsync(request.IdMorador);
                     if (checkMorador == null)
                     {
@@ -97,9 +107,11 @@ public static class MoradorBonusResource
                         return Results.BadRequest("MoradorBonus já cadastrado");
                     }
                     
-                    if (request.IdMorador <= 0) return Results.BadRequest("Código de Morador inválido");
-                    if (request.IdBonus <= 0) return Results.BadRequest("Código de Bonus inválido");
-                    if (request.Qtd < 0) return Results.BadRequest("Quantidade inválida");
+                    var checkBonusAvailable = await _serviceBonus.GetAvaliableBonusAsync(request.IdBonus);
+                    if(checkBonusAvailable.Qtd < request.Qtd)
+                    {
+                        return Results.BadRequest("Quantidade de bonus indisponível");
+                    }
                     
                     var result = await _service.UpdateAsync(id, request);
                     return Results.Ok(result);
