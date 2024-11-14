@@ -66,7 +66,7 @@ public static class BonusResource
             .WithName("CreateBonus")
             .WithTags("Bonus");
 
-        bonusGroup.MapPut("/",
+        bonusGroup.MapPut("/{id:int}",
                 async (BonusService _service, CondominioService _serviceCon, BonusRequest request, int id) =>
                 {
                     var checkCondominio = await _serviceCon.GetByIdAsync(request.IdCondominio);
@@ -94,7 +94,7 @@ public static class BonusResource
             .WithName("UpdateBonus")
             .WithTags("Bonus");
 
-        bonusGroup.MapDelete("/", async (BonusService _service, int id) =>
+        bonusGroup.MapDelete("/{id:int}", async (BonusService _service, int id) =>
             {
                 var result = await _service.DeleteAsync(id);
                 return result != null ? Results.NoContent() : Results.NotFound("Bonus não encontrado");

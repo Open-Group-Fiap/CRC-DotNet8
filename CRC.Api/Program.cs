@@ -29,12 +29,14 @@ builder.Services.AddScoped<CondominioRepository>();
 builder.Services.AddScoped<MoradorRepository>();
 builder.Services.AddScoped<FaturaRepository>();
 builder.Services.AddScoped<BonusRepository>();
+builder.Services.AddScoped<MoradorBonusRepository>();
 
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<CondominioService>();
 builder.Services.AddScoped<MoradorService>();
 builder.Services.AddScoped<FaturaService>();
 builder.Services.AddScoped<BonusService>();
+builder.Services.AddScoped<MoradorBonusService>();
 
 #endregion
 
@@ -75,5 +77,6 @@ app.MapAuthEndpoints();
 app.MapMoradorEndpoints();
 app.MapFaturaEndpoints();
 app.MapBonusEndpoints();
+app.MapMoradorBonusEndpoints();
 
 app.Run();

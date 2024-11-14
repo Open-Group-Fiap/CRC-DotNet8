@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace CRC.Domain.Entities;
 
 [Table("T_OP_CRC_MORADOR_BONUS")]
+[Index(nameof(IdMorador), nameof(IdBonus), IsUnique = true)]
 public class MoradorBonus
 {
     [Key]

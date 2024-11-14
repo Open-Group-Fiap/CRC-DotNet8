@@ -30,4 +30,7 @@ public class Bonus
     
     [NotMapped]
     public IEnumerable<MoradorBonus> MoradorBonus { get; set; }
+    
+    [NotMapped]
+    public int Qtd { get; set; }
 }
