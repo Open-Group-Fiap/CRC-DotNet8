@@ -28,12 +28,12 @@ public class AuthService
         return true;
     }
     
-    public Auth MapToEntity(AuthRequest entity)
+    public Auth MapToEntity(AuthRequest request)
     {
         return new Auth()
         {
-            Email = entity.Email,
-            HashSenha = UtilsService.QuickHash(entity.HashSenha)
+            Email = request.Email,
+            HashSenha = UtilsService.QuickHash(request.HashSenha)
         };
     }
     

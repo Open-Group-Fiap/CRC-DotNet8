@@ -17,6 +17,6 @@ public interface IService<T, Request, Response, ListResponse> where T : class wh
     
     ListResponse MapToListResponse(IEnumerable<T> entities, int pageNumber, int pageSize);
     
-    T MapToEntity(Request entity);
+    T MapToEntity(Request request);
     
 }

@@ -86,7 +86,7 @@ public static class CondominioResource
         );
         
         
-        condominioGroup.MapDelete("/delete/{id}", async (CondominioService _service, int id) =>
+        condominioGroup.MapDelete("/{id}", async (CondominioService _service, int id) =>
         {
             var result = await _service.DeleteAsync(id);
             return result != null ? Results.NoContent() : Results.NotFound("Condominio não encontrado");

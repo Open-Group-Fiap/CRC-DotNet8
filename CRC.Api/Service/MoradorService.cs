@@ -79,8 +79,6 @@ public class MoradorService : IService<Morador, MoradorRequest, MoradorResponse,
 
             var authDb = await _authRepo.UpdateAsync(auth);
             
-            Console.WriteLine("\n\n\n\n"+morador.Id+"\n\n\n\n");    
-            
             morador.Nome = request.Nome;
             morador.IdCondominio = request.IdCondominio;
             morador.IdAuth = authDb.Id;

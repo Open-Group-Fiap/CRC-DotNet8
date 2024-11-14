@@ -81,12 +81,12 @@ public class CondominioService : IService<Condominio, CondominioRequest, Condomi
         return new CondominioListResponse(pageNumber, pageSize, condominios.Count(), condominios.Select(MapToResponse));
     }
 
-    public Condominio MapToEntity(CondominioRequest entity)
+    public Condominio MapToEntity(CondominioRequest request)
     {
         return new Condominio()
         {
-            Nome = entity.Nome,
-            Endereco = entity.Endereco
+            Nome = request.Nome,
+            Endereco = request.Endereco
         };
     
     }

@@ -28,23 +28,22 @@ builder.Services.AddScoped<AuthRepository>();
 builder.Services.AddScoped<CondominioRepository>();
 builder.Services.AddScoped<MoradorRepository>();
 builder.Services.AddScoped<FaturaRepository>();
+builder.Services.AddScoped<BonusRepository>();
 
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<CondominioService>();
 builder.Services.AddScoped<MoradorService>();
 builder.Services.AddScoped<FaturaService>();
+builder.Services.AddScoped<BonusService>();
 
 #endregion
 
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 app.MapGet("/user/{id:int}", async (CrcDbContext db, int id) =>
 {
@@ -75,5 +74,6 @@ app.MapCondominioEndpoints();
 app.MapAuthEndpoints();
 app.MapMoradorEndpoints();
 app.MapFaturaEndpoints();
+app.MapBonusEndpoints();
 
 app.Run();

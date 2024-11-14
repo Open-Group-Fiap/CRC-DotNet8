@@ -88,12 +88,12 @@ public class FaturaService : IService<Fatura, FaturaRequest, FaturaResponse, Fat
         return new FaturaListResponse( pageNumber, pageSize, faturaList.Count(), faturaList);
     }
 
-    public  Fatura MapToEntity(FaturaRequest entity)
+    public  Fatura MapToEntity(FaturaRequest request)
     {
         return new Fatura {
-            IdMorador = entity.IdMorador,
-            QtdConsumida = entity.QtdConsumida,
-            DtGeracao = entity.DtGeracao
+            IdMorador = request.IdMorador,
+            QtdConsumida = request.QtdConsumida,
+            DtGeracao = request.DtGeracao
         };
     }
 }

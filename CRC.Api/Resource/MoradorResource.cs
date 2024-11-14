@@ -141,7 +141,7 @@ public static class MoradorResource
         );
         
         
-        moradorGroup.MapDelete("/delete/{id}", async (MoradorService _service, int id) =>
+        moradorGroup.MapDelete("/{id}", async (MoradorService _service, int id) =>
         {
             var result = await _service.DeleteAsync(id);
             return result != null ? Results.NoContent() : Results.NotFound("Morador não encontrado");
