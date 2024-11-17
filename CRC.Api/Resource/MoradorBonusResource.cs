@@ -108,7 +108,7 @@ public static class MoradorBonusResource
                     }
                     
                     var checkBonusAvailable = await _serviceBonus.GetAvaliableBonusAsync(request.IdBonus);
-                    if(checkBonusAvailable.Qtd < request.Qtd)
+                    if(checkBonusAvailable.Qtd < request.Qtd-checkMoradorBonus.Qtd)
                     {
                         return Results.BadRequest("Quantidade de bonus indisponível");
                     }
