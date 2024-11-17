@@ -28,8 +28,7 @@ public class MoradorRepository : IRepository<Morador>
 
     public async Task<Morador> AddAsync(Morador entity)
     {
-        int id = await _context.CreateMoradorAsync(entity.IdCondominio, entity.IdAuth, entity.Cpf, entity.Nome, entity.QtdMoradores, entity.IdentificadorRes);
-        entity.Id = id;
+        await _db.AddAsync(entity);
         await _context.SaveChangesAsync();
         return entity;
     }

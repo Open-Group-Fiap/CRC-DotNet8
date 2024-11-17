@@ -22,8 +22,7 @@ public class AuthRepository
    
    public async Task<Auth> AddAsync(Auth entity)
    {
-       int id = await _context.CreateAuthAsync(entity.Email, entity.HashSenha);
-       entity.Id = id;
+       await _db.AddAsync(entity);
        await _context.SaveChangesAsync();
        return entity;
    }

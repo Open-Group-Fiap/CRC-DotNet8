@@ -30,9 +30,8 @@ public class MoradorBonusRepository : IRepository<MoradorBonus>
 
     public async Task<MoradorBonus> AddAsync(MoradorBonus entity)
     {
-        int id = await _context.CreateMoradorBonusAsync(entity.IdMorador, entity.IdBonus, entity.Qtd);
+        await _db.AddAsync(entity);
         await _context.SaveChangesAsync();
-        entity.Id = id;
         return entity;
     }
 

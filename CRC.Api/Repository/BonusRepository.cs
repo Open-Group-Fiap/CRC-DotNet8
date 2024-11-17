@@ -29,9 +29,8 @@ public class BonusRepository : IRepository<Bonus>
 
     public async Task<Bonus> AddAsync(Bonus entity)
     {
-        int id = await _context.CreateBonusAsync(entity.IdCondominio, entity.Nome, entity.Descricao, entity.Custo, entity.QtdMax);
+        await _db.AddAsync(entity);
         await _context.SaveChangesAsync();
-        entity.Id = id;
         return entity;
     }
 
