@@ -24,7 +24,8 @@ public class CrcDbContext : DbContext
         modelBuilder.Entity<Morador>()
             .HasOne(m => m.Auth)
             .WithOne(a => a.Morador)
-            .OnDelete(DeleteBehavior.Cascade); 
+            .HasForeignKey<Morador>(m => m.IdAuth)
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Morador>()
             .HasMany(m => m.MoradorBonus)

@@ -98,6 +98,9 @@ public static class MoradorResource
             //check if HashSenha contain at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character
             if(!UtilsService.IsValidPassword(request.HashSenha)) return Results.BadRequest("Senha inválida, deve conter no mínimo 8 caracteres, 1 letra maiúscula, 1 letra minúscula, 1 número e 1 caractere especial");
             
+            var checkId = await _service.GetByIdAsync(id);
+            if(checkId == null) return Results.NotFound("Morador não encontrado");
+            
             
             var checkUserEmail = await _service.GetByEmailAsync(request.Email);
             
@@ -124,7 +127,7 @@ public static class MoradorResource
 
             var result = await _service.UpdateAsync(id, request);
             if(result == null) return Results.NotFound("Morador não encontrado");
-            return Results.Created($"/morador/{result.Id}", result);
+            return Results.Ok(result);
         })
         .WithDescription("Atualiza um morador")
         .Produces<MoradorResponse>(StatusCodes.Status201Created)
@@ -159,7 +162,7 @@ public static class MoradorResource
             }
         );
         
-        moradorGroup.MapGet("/{email}", async (MoradorService _service, string email) =>
+        moradorGroup.MapGet("email/{email}", async (MoradorService _service, string email) =>
         {
             var result = await _service.GetByEmailAsync(email);
             return result != null ? Results.Ok(result) : Results.NotFound("Morador não encontrado");
