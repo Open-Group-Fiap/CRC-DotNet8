@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.5"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.8" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
@@ -23,6 +24,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\CRC.Data\CRC.Data.csproj" />
+      <ProjectReference Include="..\CRC.IA\CRC.IA.csproj" />
     </ItemGroup>
 
 </Project>

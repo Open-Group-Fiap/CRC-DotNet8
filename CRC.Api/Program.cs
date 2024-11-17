@@ -127,5 +127,6 @@ app.MapMoradorEndpoints();
 app.MapFaturaEndpoints();
 app.MapBonusEndpoints();
 app.MapMoradorBonusEndpoints();
+app.MapPrevisaoEndpoints();
 
 app.Run();
