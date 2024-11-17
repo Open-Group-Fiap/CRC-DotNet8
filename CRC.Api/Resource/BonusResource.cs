@@ -45,7 +45,7 @@ public static class BonusResource
                 var checkCondominio = await _serviceCon.GetByIdAsync(request.IdCondominio);
                 if (checkCondominio == null)
                 {
-                    return Results.BadRequest("Condomínio não encontrado");
+                    return Results.BadRequest("Código de Condomínio inválido");
                 }
 
                 if (string.IsNullOrWhiteSpace(request.Nome)) return Results.BadRequest("Nome inválido");
@@ -72,7 +72,7 @@ public static class BonusResource
                     var checkCondominio = await _serviceCon.GetByIdAsync(request.IdCondominio);
                     if (checkCondominio == null)
                     {
-                        return Results.BadRequest("Condomínio não encontrado");
+                        return Results.BadRequest("Código de Condomínio inválido");
                     }
 
                     if (string.IsNullOrWhiteSpace(request.Nome)) return Results.BadRequest("Nome inválido");
@@ -112,7 +112,7 @@ public static class BonusResource
                     var checkCondominio = await _serviceCon.GetByIdAsync(idCondominio);
                     if (checkCondominio == null)
                     {
-                        return Results.BadRequest("Condomínio não encontrado");
+                        return Results.NotFound("Condomínio não encontrado");
                     }
 
                     var result = await _service.GetByCondominioIdAsync(idCondominio, pageNumber, pageSize);
@@ -137,7 +137,7 @@ public static class BonusResource
                     var checkCondominio = await _serviceCon.GetByIdAsync(idCondominio);
                     if (checkCondominio == null)
                     {
-                        return Results.BadRequest("Condomínio não encontrado");
+                        return Results.NotFound("Condomínio não encontrado");
                     }
 
                     var result = await _service.GetAvaliableByCondominioIdAsync(idCondominio);

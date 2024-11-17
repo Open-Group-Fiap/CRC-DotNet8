@@ -1,7 +1,8 @@
-﻿using System.Diagnostics;
-using System.Net;
+﻿using System.Net;
 using CRC.IA.Entities;
 using Microsoft.ML;
+
+namespace CRC.IA;
 
 public class Program
 {

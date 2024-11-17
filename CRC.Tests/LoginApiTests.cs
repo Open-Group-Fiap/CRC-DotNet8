@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
+using CIDA.Api;
 using CRC.Api.Models.Request;
 using Microsoft.AspNetCore.Mvc.Testing;
 
@@ -37,7 +38,7 @@ public class LoginApiTests
     {
         // Arrange
         var login = new AuthRequest(
-            "examplo@examplo.com",
+            "exemplo@exemplo.com",
             "123456"
         );
 

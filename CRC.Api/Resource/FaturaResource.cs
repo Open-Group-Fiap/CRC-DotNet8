@@ -77,7 +77,7 @@ public static class FaturaResource
         faturaGroup.MapDelete("/{id}", async (FaturaService _service, int id) =>
         {
             var result = await _service.DeleteAsync(id);
-            return result == null ? Results.NoContent() : Results.NotFound("Fatura não encontrada");
+            return result != null ? Results.NoContent() : Results.NotFound("Fatura não encontrada");
         })
         .WithDescription("Deleta uma fatura")
         .Produces(StatusCodes.Status204NoContent)

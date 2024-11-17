@@ -63,9 +63,7 @@ public class MoradorService : IService<Morador, MoradorRequest, MoradorResponse,
     
     public async Task<MoradorResponse> UpdateAsync(int id, MoradorRequest request)
     {
-        await using var transaction = await _context.Database.BeginTransactionAsync();
-        try
-        {
+        
             var morador = await _repo.GetByIdAsync(id);
             if (morador == null)
             {
@@ -91,27 +89,24 @@ public class MoradorService : IService<Morador, MoradorRequest, MoradorResponse,
             updatedMorador = await _repo.GetByIdAsync(updatedMorador.Id);
 
             return MapToResponse(updatedMorador);
-        }
-        catch (Exception)
-        {
-            await transaction.RollbackAsync();
-            throw;
-        }
+       
+        
     }
     
     public async Task<MoradorResponse> DeleteAsync(int id)
     {
         var morador = await _repo.GetByIdAsync(id);
-        var auth = await _authRepo.GetByIdAsync(morador.IdAuth);
         
         if (morador == null)
         {
             return null;
         }
         
+        var auth = await _authRepo.GetByIdAsync(morador.IdAuth);
+
+        
         await _authRepo.DeleteAsync(auth);
-        var deletedMorador = await _repo.DeleteAsync(morador);
-        return MapToResponse(deletedMorador);
+        return MapToResponse(morador);
     }
     
     public async Task<MoradorResponse> GetByEmailAsync(string email)
