@@ -179,7 +179,7 @@ public class Program
         {
             builder.Services.AddDbContext<CrcDbContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConnection"));
+                options.UseOracle(builder.Configuration.GetConnectionString("OracleConnection"));
             });
         }
 
