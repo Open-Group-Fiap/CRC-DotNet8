@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CRC.Api.Repository;
 
-public class MoradorBonusRepository : IRepository<MoradorBonus>
+public class MoradorBonusRepository : IMoradorBonusRepository
 {
     private readonly CrcDbContext _context;
     private readonly DbSet<MoradorBonus> _db;
