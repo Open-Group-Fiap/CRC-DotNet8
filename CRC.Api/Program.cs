@@ -123,19 +123,22 @@ public class Program
                         Id = 1,
                         Nome = "Bonus 1",
                         Descricao = "Bonus 1",
-                        Qtd = 100
+                        Qtd = 100,
+                        IdCondominio = 1
                     }, new Bonus
                     {
                         Id = 2,
                         Nome = "Bonus 2",
                         Descricao = "Bonus 2",
-                        Qtd = 200
+                        Qtd = 200,
+                        IdCondominio = 2
                     }, new Bonus
                     {
                         Id = 3,
                         Nome = "Bonus 3",
                         Descricao = "Bonus 3",
-                        Qtd = 300
+                        Qtd = 300,
+                        IdCondominio = 3
                     });
 
                 context.MoradorBonus.AddRange(
