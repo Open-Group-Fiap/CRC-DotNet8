@@ -89,7 +89,7 @@ public class Program
                     }, new Morador
                     {
                         Id = 3,
-                        IdCondominio = 2,
+                        IdCondominio = 3,
                         IdAuth = 3,
                         Cpf = "123.456.789-03",
                         Nome = "Morador 3",
