@@ -1,3 +1,4 @@
+using CRC.Api.Models.Response;
 using CRC.Api.Repository;
 using CRC.Api.Resource;
 using CRC.Api.Service;
@@ -115,6 +116,12 @@ public class Program
                         IdMorador = 3,
                         QtdConsumida = 300,
                         DtGeracao = DateTime.Now
+                    }, new Fatura
+                    {
+                        Id = 4,
+                        IdMorador = 1,
+                        QtdConsumida = 100,
+                        DtGeracao = DateTime.Now - TimeSpan.FromDays(30)
                     });
 
                 context.Bonus.AddRange(
@@ -207,6 +214,14 @@ public class Program
 
         app.MapGet("/consumo/{idMorador:int}", async (CrcDbContext db, int idMorador) =>
             {
+                var morador = await db.Moradores.FindAsync(idMorador);
+                
+                if (morador == null)
+                {
+                    return Results.NotFound("Morador não encontrado");
+                }
+                
+                
                 var faturaAtual = await db.Faturas
                     .Where(f => f.Morador.Id == idMorador)
                     .OrderByDescending(f => f.DtGeracao)
@@ -241,30 +256,37 @@ public class Program
                 return generatedOperation;
             });
 
-
+        // Endpoint para gerar faturas aleatórias ( Não é um serviço real, apenas para testes no mobile )
         app.MapGet("/randomFatura/{idMorador:int}", async (CrcDbContext db, int idMorador) =>
             {
                 var morador = await db.Moradores.FindAsync(idMorador);
 
                 if (morador == null)
                 {
-                    return Results.BadRequest("Morador não encontrado");
+                    return Results.NotFound("Morador não encontrado");
                 }
 
                 var fatura = new Fatura
                 {
-                    Morador = morador,
-                    DtGeracao = DateTime.Now - TimeSpan.FromDays(new Random().Next(1, 366)),
+                    IdMorador = idMorador,
                     QtdConsumida = new Random().Next(1, 100),
+                    DtGeracao = DateTime.Now - TimeSpan.FromDays(new Random().Next(1, 366))
                 };
 
                 await db.Faturas.AddAsync(fatura);
                 await db.SaveChangesAsync();
 
-                return Results.Ok(fatura);
+                var response = new FaturaResponse(
+                    fatura.Id,
+                    fatura.IdMorador,
+                    fatura.QtdConsumida,
+                    fatura.DtGeracao
+                );
+
+                return Results.Ok(response);
             })
             .WithDescription("Cria uma fatura aleatória para um morador")
-            .Produces<Fatura>()
+            .Produces<FaturaResponse>()
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .WithTags("Utils")
             .WithName("CreateRandomFatura")
