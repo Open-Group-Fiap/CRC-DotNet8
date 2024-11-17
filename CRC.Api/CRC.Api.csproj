@@ -23,6 +23,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\CRC.Data\CRC.Data.csproj" />
+      <ProjectReference Include="..\CRC.IA\CRC.IA.csproj" />
     </ItemGroup>
 
 </Project>
