@@ -22,7 +22,7 @@ public class Program
 
         #region Database
 
-        if (builder.Environment.IsDevelopment())
+        if (!builder.Environment.IsDevelopment())
         {
             builder.Services.AddDbContext<CrcDbContext>(options =>
                 options.UseInMemoryDatabase("TestDb"));
@@ -208,6 +208,11 @@ public class Program
 
 
         app.UseSwagger();
+        app.UseSwaggerUI(options =>
+        {
+            options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+            options.RoutePrefix = string.Empty;
+        });
         app.UseSwaggerUI();
 
         #region Rotas_alternativas_de_servico
@@ -297,6 +302,35 @@ public class Program
                 parameter.Required = true;
                 return generatedOperation;
             });
+        
+        // Dar boot no banco de dados
+        app.MapGet("/boot", async (CrcDbContext db) =>
+            {
+                int result = 0;
+
+                try
+                {
+                    using (var connection = db.Database.GetDbConnection())
+                    {
+                        await connection.OpenAsync();
+                        var command = connection.CreateCommand();
+                        command.CommandText = "SELECT 1";
+
+                        result = (int)await command.ExecuteScalarAsync();
+                    }
+                }
+                catch (Exception e)
+                {
+                    result = 0;
+                }
+
+                return Results.Ok(result);
+            })
+            .WithName("Boot")
+            .WithTags("Boot")
+            .WithDescription("Endpoint para inicialização do banco de dados")
+            .WithOpenApi();
+
 
         #endregion
 
