@@ -22,7 +22,7 @@ public class Program
 
         #region Database
 
-        if (!builder.Environment.IsDevelopment())
+        if (builder.Environment.IsDevelopment())
         {
             builder.Services.AddDbContext<CrcDbContext>(options =>
                 options.UseInMemoryDatabase("TestDb"));
