@@ -36,7 +36,7 @@ public static class MoradorResource
         moradorGroup.MapPost("/", async (MoradorService _service,  CondominioService _serviceCon, MoradorRequest request) =>
             {
                 if (request.Email != null) request = request with { Email = request.Email.Trim() };
-                if(request.HashSenha != null) request = request with { HashSenha = request.HashSenha.Trim() };
+                if(request.Senha != null) request = request with { Senha = request.Senha.Trim() };
                 
                 if(string.IsNullOrWhiteSpace(request.Nome)) return Results.BadRequest("Nome inválido");
                 if(string.IsNullOrWhiteSpace(request.Email)) return Results.BadRequest("Email inválido");
@@ -47,7 +47,7 @@ public static class MoradorResource
                 if(!UtilsService.IsValidEmail(request.Email)) return Results.BadRequest("Email inválido");
                 if(!UtilsService.IsValidCpf(request.Cpf)) return Results.BadRequest("CPF inválido");
                 //check if HashSenha contain at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character
-                if(!UtilsService.IsValidPassword(request.HashSenha)) return Results.BadRequest("Senha inválida, deve conter no mínimo 8 caracteres, 1 letra maiúscula, 1 letra minúscula, 1 número e 1 caractere especial");
+                if(!UtilsService.IsValidPassword(request.Senha)) return Results.BadRequest("Senha inválida, deve conter no mínimo 8 caracteres, 1 letra maiúscula, 1 letra minúscula, 1 número e 1 caractere especial");
                 
 
                 var checkUserEmail = await _service.GetByEmailAsync(request.Email);
@@ -85,7 +85,7 @@ public static class MoradorResource
         moradorGroup.MapPut("/{id:int}", async (MoradorService _service, CondominioService _serviceCon, MoradorRequest request, int id) =>
         {
             if (request.Email != null) request = request with { Email = request.Email.Trim() };
-            if(request.HashSenha != null) request = request with { HashSenha = request.HashSenha.Trim() };
+            if(request.Senha != null) request = request with { Senha = request.Senha.Trim() };
                 
             if(string.IsNullOrWhiteSpace(request.Nome)) return Results.BadRequest("Nome inválido");
             if(string.IsNullOrWhiteSpace(request.Email)) return Results.BadRequest("Email inválido");
@@ -96,7 +96,7 @@ public static class MoradorResource
             if(!UtilsService.IsValidEmail(request.Email)) return Results.BadRequest("Email inválido");
             if(!UtilsService.IsValidCpf(request.Cpf)) return Results.BadRequest("CPF inválido, use o formato 000.000.000-00");
             //check if HashSenha contain at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character
-            if(!UtilsService.IsValidPassword(request.HashSenha)) return Results.BadRequest("Senha inválida, deve conter no mínimo 8 caracteres, 1 letra maiúscula, 1 letra minúscula, 1 número e 1 caractere especial");
+            if(!UtilsService.IsValidPassword(request.Senha)) return Results.BadRequest("Senha inválida, deve conter no mínimo 8 caracteres, 1 letra maiúscula, 1 letra minúscula, 1 número e 1 caractere especial");
             
             var checkId = await _service.GetByIdAsync(id);
             if(checkId == null) return Results.NotFound("Morador não encontrado");
