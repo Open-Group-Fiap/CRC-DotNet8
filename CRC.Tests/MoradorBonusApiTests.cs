@@ -225,7 +225,7 @@ public class MoradorBonusApiTests
         var request = new MoradorBonusRequest(
             3,
             3,
-            4
+            11
         );
 
         // Act

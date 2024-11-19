@@ -46,7 +46,7 @@ public class MoradorService : IService<Morador, MoradorRequest, MoradorResponse,
             var auth = new Auth()
             {
                 Email = request.Email,
-                HashSenha = UtilsService.QuickHash(request.HashSenha)
+                HashSenha = UtilsService.QuickHash(request.Senha)
             };
 
             var authDb = await _authRepo.AddAsync(auth);
@@ -73,7 +73,7 @@ public class MoradorService : IService<Morador, MoradorRequest, MoradorResponse,
             var auth = await _authRepo.GetByIdAsync(morador.IdAuth);
             
             auth.Email = request.Email;
-            auth.HashSenha = UtilsService.QuickHash(request.HashSenha);
+            auth.HashSenha = UtilsService.QuickHash(request.Senha);
 
             var authDb = await _authRepo.UpdateAsync(auth);
             
