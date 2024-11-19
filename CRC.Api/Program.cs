@@ -76,6 +76,7 @@ public class Program
                         Cpf = "123.456.789-01",
                         Nome = "Morador 1",
                         QtdMoradores = 1,
+                        Pontos = 100,
                         IdentificadorRes = "Apto 1"
                     }, new Morador
                     {
@@ -85,6 +86,7 @@ public class Program
                         Cpf = "123.456.789-02",
                         Nome = "Morador 2",
                         QtdMoradores = 2,
+                        Pontos = 100,
                         IdentificadorRes = "Apto 2"
                     }, new Morador
                     {
@@ -94,6 +96,7 @@ public class Program
                         Cpf = "123.456.789-03",
                         Nome = "Morador 3",
                         QtdMoradores = 3,
+                        Pontos = 100,
                         IdentificadorRes = "Apto 3"
                     });
 
@@ -131,6 +134,7 @@ public class Program
                         Nome = "Bonus 1",
                         Descricao = "Bonus 1",
                         QtdMax = 100,
+                        Custo = 10,
                         IdCondominio = 1
                     }, new Bonus
                     {
@@ -138,6 +142,7 @@ public class Program
                         Nome = "Bonus 2",
                         Descricao = "Bonus 2",
                         QtdMax = 200,
+                        Custo = 10,
                         IdCondominio = 2
                     }, new Bonus
                     {
@@ -145,6 +150,7 @@ public class Program
                         Nome = "Bonus 3",
                         Descricao = "Bonus 3",
                         QtdMax = 300,
+                        Custo = 10,
                         IdCondominio = 3
                     });
 
