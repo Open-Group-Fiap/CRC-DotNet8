@@ -9,11 +9,14 @@ public class FaturaService : IService<Fatura, FaturaRequest, FaturaResponse, Fat
 {
     
     private FaturaRepository _repo;
+    private MoradorRepository _moradorRepo;
 
-    public FaturaService(FaturaRepository repo)
+    public FaturaService(FaturaRepository repo, MoradorRepository moradorRepo)
     {
         _repo = repo;
+        _moradorRepo = moradorRepo;
     }
+
     
     public async Task<FaturaListResponse> GetAllAsync(int pageNumber, int pageSize)
     {
@@ -35,6 +38,14 @@ public class FaturaService : IService<Fatura, FaturaRequest, FaturaResponse, Fat
     {
         
         var fatura = MapToEntity(request);
+
+        var morador = await _moradorRepo.GetByIdAsync(fatura.IdMorador);
+        
+        decimal pontos = ((decimal) morador.QtdMoradores / fatura.QtdConsumida) * 1000;
+        var pontosRedondo = (int) Math.Round(pontos);
+        
+        morador.Pontos += pontosRedondo;
+        await _moradorRepo.UpdateAsync(morador);
         
         var addedFatura = await _repo.AddAsync(fatura);
         return MapToResponse(addedFatura);
