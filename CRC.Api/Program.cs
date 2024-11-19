@@ -274,7 +274,7 @@ public class Program
                 var fatura = new Fatura
                 {
                     IdMorador = idMorador,
-                    QtdConsumida = new Random().Next(1, 100),
+                    QtdConsumida = new Random().Next(70, 120),
                     DtGeracao = DateTime.Now - TimeSpan.FromDays(new Random().Next(1, 366))
                 };
 
