@@ -218,8 +218,7 @@ namespace CRC.Data.Migrations
 
                     b.HasIndex("IdBonus");
 
-                    b.HasIndex("IdMorador", "IdBonus")
-                        .IsUnique();
+                    b.HasIndex("IdMorador");
 
                     b.ToTable("T_OP_CRC_MORADOR_BONUS");
                 });

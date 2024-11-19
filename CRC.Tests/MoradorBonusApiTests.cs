@@ -145,25 +145,6 @@ public class MoradorBonusApiTests
     }
     
     [Fact]
-    public async Task PostMoradorBonus_ReturnsBadRequest_WhenMoradorBonusAlreadyExists()
-    {
-        // Arrange
-        var request = new MoradorBonusRequest(
-            1,
-            1,
-            1
-        );
-
-        // Act
-        var response = await _client.PostAsJsonAsync("/moradorbonus", request);
-
-        // Assert
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        var content = await response.Content.ReadAsStringAsync();
-        Assert.Equal("MoradorBonus já cadastrado", content.Trim('"'));
-    }
-    
-    [Fact]
     public async Task PostMoradorBonus_ReturnsBadRequest_WhenBonusIsNotAvailable()
     {
         // Arrange

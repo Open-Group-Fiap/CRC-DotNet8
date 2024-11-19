@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRC.Data.Migrations
 {
     [DbContext(typeof(CrcDbContext))]
-    [Migration("20241118115636_Initial")]
+    [Migration("20241119140058_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -221,8 +221,7 @@ namespace CRC.Data.Migrations
 
                     b.HasIndex("IdBonus");
 
-                    b.HasIndex("IdMorador", "IdBonus")
-                        .IsUnique();
+                    b.HasIndex("IdMorador");
 
                     b.ToTable("T_OP_CRC_MORADOR_BONUS");
                 });

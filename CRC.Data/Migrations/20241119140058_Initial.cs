@@ -179,10 +179,9 @@ namespace CRC.Data.Migrations
                 column: "ID_BONUS");
 
             migrationBuilder.CreateIndex(
-                name: "IX_T_OP_CRC_MORADOR_BONUS_ID_MORADOR_ID_BONUS",
+                name: "IX_T_OP_CRC_MORADOR_BONUS_ID_MORADOR",
                 table: "T_OP_CRC_MORADOR_BONUS",
-                columns: new[] { "ID_MORADOR", "ID_BONUS" },
-                unique: true);
+                column: "ID_MORADOR");
         }
 
         /// <inheritdoc />

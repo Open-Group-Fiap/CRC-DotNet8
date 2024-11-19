@@ -1,8 +1,5 @@
-﻿using System.Data;
-using System.Net;
-using CRC.Domain.Entities;
+﻿using CRC.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Oracle.ManagedDataAccess.Client;
 
 namespace CRC.Data;
 
