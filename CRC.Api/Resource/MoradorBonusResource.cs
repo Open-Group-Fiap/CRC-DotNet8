@@ -58,7 +58,8 @@ public static class MoradorBonusResource
                 {
                     return Results.BadRequest("Bonus não encontrado");
                 }
-                
+
+
                 var checkMoradorBonus = await _service.GetByMoradorIdAndBonusIdAsync(request.IdMorador, request.IdBonus);
                 
                 if (checkMoradorBonus != null)
@@ -71,6 +72,8 @@ public static class MoradorBonusResource
                 {
                     return Results.BadRequest("Quantidade de bonus indisponível");
                 }
+                
+                if(checkBonus.Custo*request.Qtd > checkMorador.Pontos) return Results.BadRequest("Saldo insuficiente");
                 
                 var result = await _service.AddAsync(request);
                 return Results.Created($"/moradorbonus/{result.Id}", result);
@@ -99,19 +102,23 @@ public static class MoradorBonusResource
                     {
                         return Results.BadRequest("Bonus não encontrado");
                     }
-                    
+
                     var checkMoradorBonus = await _service.GetByMoradorIdAndBonusIdAsync(request.IdMorador, request.IdBonus);
                     
                     if (checkMoradorBonus != null && checkMoradorBonus.Id != id)
                     {
                         return Results.BadRequest("MoradorBonus já cadastrado");
                     }
-                    
+
                     var checkBonusAvailable = await _serviceBonus.GetAvaliableBonusAsync(request.IdBonus);
                     if(checkBonusAvailable.Qtd < request.Qtd-checkMoradorBonus.Qtd)
                     {
                         return Results.BadRequest("Quantidade de bonus indisponível");
                     }
+
+                    if (checkMoradorBonus.Qtd >= request.Qtd) return Results.BadRequest("Quantidade de bônus nova não pode ser menor que a anterior");
+                    
+                    if ((checkBonus.Custo * request.Qtd) - checkMoradorBonus.Qtd*checkBonus.Custo > checkMorador.Pontos) return Results.BadRequest("Saldo insuficiente");
                     
                     var result = await _service.UpdateAsync(id, request);
                     return Results.Ok(result);
