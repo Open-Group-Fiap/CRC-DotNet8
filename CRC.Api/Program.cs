@@ -278,6 +278,11 @@ public class Program
                     DtGeracao = DateTime.Now - TimeSpan.FromDays(new Random().Next(1, 366))
                 };
 
+                decimal pontos = ((decimal)morador.QtdMoradores / fatura.QtdConsumida) * 1000;
+                var pontosRedondo = (int)Math.Round(pontos);
+                morador.Pontos += pontosRedondo;
+                db.Moradores.Update(morador);
+
                 await db.Faturas.AddAsync(fatura);
                 await db.SaveChangesAsync();
 
