@@ -8,10 +8,14 @@ namespace CRC.Api.Service;
 public class MoradorBonusService : IService<MoradorBonus, MoradorBonusRequest, MoradorBonusResponse, MoradorBonusListResponse>
 {
     private MoradorBonusRepository _repo;
+    private MoradorRepository _moradorRepo;
+    private BonusRepository _bonusRepo;
     
-    public MoradorBonusService(MoradorBonusRepository repo)
+    public MoradorBonusService(MoradorBonusRepository repo, MoradorRepository moradorRepo, BonusRepository bonusRepo)
     {
         _repo = repo;
+        _moradorRepo = moradorRepo;
+        _bonusRepo = bonusRepo;
     }
     
     
@@ -36,8 +40,19 @@ public class MoradorBonusService : IService<MoradorBonus, MoradorBonusRequest, M
     public async Task<MoradorBonusResponse> AddAsync(MoradorBonusRequest request)
     {
         var moradorBonus = MapToEntity(request);
+
+
         moradorBonus = await _repo.AddAsync(moradorBonus);
-        
+
+        var morador = await _moradorRepo.GetByIdAsync(moradorBonus.IdMorador);
+        var bonus = await _bonusRepo.GetByIdAsync(moradorBonus.IdBonus);
+
+        decimal pontos = (decimal) morador.Pontos - request.Qtd * bonus.Custo;
+
+        morador.Pontos = (int)Math.Round(pontos);
+
+        _moradorRepo.UpdateAsync(morador);
+
         moradorBonus = await _repo.GetByIdAsync(moradorBonus.Id);
         
         return MapToResponse(moradorBonus);
@@ -51,13 +66,24 @@ public class MoradorBonusService : IService<MoradorBonus, MoradorBonusRequest, M
         {
             return null;
         }
+
+        var qtdAntes = moradorBonus.Qtd;
         
         moradorBonus.IdMorador = request.IdMorador;
         moradorBonus.IdBonus = request.IdBonus;
         moradorBonus.Qtd = request.Qtd;
         
         await _repo.UpdateAsync(moradorBonus);
-        
+
+        var morador = await _moradorRepo.GetByIdAsync(moradorBonus.IdMorador);
+        var bonus = await _bonusRepo.GetByIdAsync(moradorBonus.IdBonus);
+
+        decimal pontos = ((decimal)morador.Pontos - request.Qtd * bonus.Custo) + qtdAntes*bonus.Custo;
+
+        morador.Pontos = (int)Math.Round(pontos);
+
+        _moradorRepo.UpdateAsync(morador);
+
         return MapToResponse(moradorBonus);
     }
 

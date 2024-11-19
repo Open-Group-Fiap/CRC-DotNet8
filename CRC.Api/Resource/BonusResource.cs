@@ -16,7 +16,7 @@ public static class BonusResource
                 return Results.Ok(result);
             })
             .WithDescription("Retorna uma lista de bonus")
-            .Produces<List<BonusResponse>>(StatusCodes.Status200OK)
+            .Produces<BonusListResponse>(StatusCodes.Status200OK)
             .WithName("GetAllBonus")
             .WithTags("Bonus");
 
@@ -119,7 +119,7 @@ public static class BonusResource
                     return Results.Ok(result);
                 })
             .WithDescription("Retorna uma lista de bonus por condomínio")
-            .Produces<List<BonusResponse>>(StatusCodes.Status200OK)
+            .Produces<BonusListResponse>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .WithName("GetBonusByCondominioId")
             .WithTags("Bonus")
