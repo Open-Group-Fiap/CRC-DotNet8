@@ -23,3 +23,13 @@ O objetivo principal da solução é fornecer uma plataforma que permita o geren
 - Bonus: Para gerenciamento dos bonus dos condominios
 - Fatura: Para gerenciamento do consumo de energia dos moradores
 - MoradorBonus: Para gerenciamento da relação entre as entidades Morador e Bonus
+
+## Integrantes
+
+Cauã Alencar Rojas Romero - RM98638
+
+Jaci Teixeira Santos - RM99627
+
+Leonardo dos Santos Guerra - RM99738
+
+Maria Eduarda Ferreira da Mata - RM99004
