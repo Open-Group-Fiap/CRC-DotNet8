@@ -51,7 +51,7 @@ public class MoradorBonusService : IService<MoradorBonus, MoradorBonusRequest, M
 
         morador.Pontos = (int)Math.Round(pontos);
 
-        _moradorRepo.UpdateAsync(morador);
+        await _moradorRepo.UpdateAsync(morador);
 
         moradorBonus = await _repo.GetByIdAsync(moradorBonus.Id);
         
@@ -82,7 +82,7 @@ public class MoradorBonusService : IService<MoradorBonus, MoradorBonusRequest, M
 
         morador.Pontos = (int)Math.Round(pontos);
 
-        _moradorRepo.UpdateAsync(morador);
+        await _moradorRepo.UpdateAsync(morador);
 
         return MapToResponse(moradorBonus);
     }
